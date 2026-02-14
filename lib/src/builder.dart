@@ -502,14 +502,21 @@ class MarkdownBuilder implements md.NodeVisitor {
           }
         }
       } else if (tag == 'img') {
-        // create an image widget for this image
-        current.children.add(_buildPadding(
+        // Wrap the image in a WidgetSpan inside a Text.rich so that it
+        // participates in inline text layout and merging, instead of being
+        // a standalone widget in the Wrap.
+        final Widget imageWidget = _buildPadding(
           padding,
           _buildImage(
             element.attributes['src']!,
             element.attributes['title'],
             element.attributes['alt'],
           ),
+        );
+        current.children.add(_buildRichText(
+          TextSpan(children: <InlineSpan>[
+            WidgetSpan(child: imageWidget),
+          ]),
         ));
       } else if (tag == 'br') {
         current.children.add(_buildRichText(const TextSpan(text: '\n')));

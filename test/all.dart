@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'blockquote_test.dart' as blockquote_test;
+import 'context_menu_builder_test.dart' as context_menu_builder_test;
 import 'custom_syntax_test.dart' as custome_syntax_test;
 import 'emphasis_test.dart' as emphasis_test;
 import 'footnote_test.dart' as footnote_test;
@@ -13,6 +14,7 @@ import 'image_test.dart' as image_test;
 import 'line_break_test.dart' as line_break_test;
 import 'link_test.dart' as link_test;
 import 'list_test.dart' as list_test;
+import 'render_golden_test.dart' as render_golden_test;
 import 'scrollable_test.dart' as scrollable_test;
 import 'selection_area_compatibility_test.dart' as selection_area_test;
 import 'style_sheet_test.dart' as style_sheet_test;
@@ -24,6 +26,7 @@ import 'uri_test.dart' as uri_test;
 
 void main() {
   blockquote_test.defineTests();
+  context_menu_builder_test.defineTests();
   custome_syntax_test.defineTests();
   emphasis_test.defineTests();
   footnote_test.defineTests();
@@ -34,6 +37,7 @@ void main() {
   line_break_test.defineTests();
   link_test.defineTests();
   list_test.defineTests();
+  render_golden_test.defineTests();
   scrollable_test.defineTests();
   selection_area_test.defineTests();
   style_sheet_test.defineTests();

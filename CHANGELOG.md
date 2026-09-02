@@ -1,3 +1,51 @@
+## 1.0.12
+
+* Added golden render regression tests for the Markdown widgets, covering text formatting, emphasis, blockquotes, lists, tables, task lists, and code blocks. They render with real fonts and run in the local `flutter test` suite; like the existing image goldens they are platform-specific, and are skipped on CI (whose Flutter `stable` channel is unpinned) to avoid flaky pixel-exact diffs when the toolchain drifts
+
+## 1.0.11
+
+* Overhauled the README: added a feature list, installation instructions, a widget comparison (`Markdown` / `MarkdownBody` / `MarkdownRaw`), and code examples for link handling (`onTapLink`), `MarkdownStyleSheet` styling, and custom element builders — documenting the previously undocumented `onTapLink` and `styleSheet` APIs (resolves #123)
+* Added screenshots to the pub.dev listing showcasing rich-text formatting, GitHub Flavored Markdown tables and task lists, and code blocks
+* Pointed the `documentation` link at the generated API docs on pub.dev
+
+## 1.0.10
+
+* Added a `contextMenuBuilder` parameter to `Markdown` and `MarkdownBody`, letting callers customise or suppress (pass `null`) the text-selection toolbar shown when `selectable` is enabled. Defaults to the platform-adaptive Flutter selection toolbar, so existing behaviour is unchanged (#134)
+* `onSelectionChanged` now reports the full selectable plain text via `TextSpan.toPlainText()`. Previously, paragraphs containing rich/nested inline spans (bold, italic, code, links) reported the top-level `TextSpan.text`, which was `null` for multi-child spans; callers now receive the complete text so `TextSelection.textInside` works as expected (#134)
+
+**Thanks to our contributors:**
+* [@momadvisor](https://github.com/momadvisor) for the `contextMenuBuilder` parameter and plain-text selection fix (#134)
+
+## 1.0.9
+
+* Fixed custom inline `builders` (e.g. `a`) duplicating trailing text when the element had multiple children, such as link text containing a `_` or `*` delimiter that the parser splits into separate text nodes (#132)
+
+**Thanks to our contributors:**
+* [@Jess-Gabia](https://github.com/Jess-Gabia) for reporting the issue and identifying the fix (#132)
+* [@amungi](https://github.com/amungi) for confirming the fix in production
+
+## 1.0.8
+
+* Fixed custom `builders` and `paddingBuilders` for the `hr` tag being ignored
+* Fixed bold, italic, and link formatting not rendering inside blockquotes
+* Forced a consistent line height within each text block so mixed font weights (e.g. bold) no longer shift line height, while headers and other blocks keep their own height
+* Updated the default blockquote styling to be theme-aware (uses `surfaceContainerHighest` with a primary-coloured left border) for better light/dark mode support
+* Added a `noScroll` option to the `Markdown` widget to render content in a non-scrolling `Column` for use inside an existing scroll view
+* Added an integration test suite (`example/integration_test/`) that runs on a device or emulator, covering link taps, scrolling, task-list checkboxes, text selection, and example app launch
+* Added `scripts/integration_test.sh` and a GitHub Actions job that runs the integration tests on an Android emulator
+* Migrated linting to `package:flutter_lints`, retaining strict type analysis and required public API documentation
+* Updated dependencies: `markdown` to `^7.3.1`, `mockito` to `^5.7.0`, and pinned `leak_tracker_flutter_testing`
+* Aligned the example app's Flutter constraint with the package and added a `documentation` link to the pubspec
+* Updated the example app's Android Gradle Plugin to 8.6.0 (Flutter's current minimum) and removed an unused Google Cloud Artifact Registry Gradle plugin
+* Excluded the locally symlinked `flutter_markdown_plus_latex` package from analysis and publishing
+
+**Thanks to our contributors:**
+* [@joelbrostrom](https://github.com/joelbrostrom) for fixing custom builders on the `hr` tag (#131)
+* [@vsaase](https://github.com/vsaase) for fixing inline formatting inside blockquotes (#128)
+* [@domhel](https://github.com/domhel) for theme-aware blockquote styling (#42)
+* [@szuwest](https://github.com/szuwest) for the strong text line-height fix (#130)
+* [@senlinjun](https://github.com/senlinjun) for the `noScroll` option (#38)
+
 ## 1.0.7
 
 * Improved pub.dev score by making example app source code available in published package

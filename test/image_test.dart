@@ -204,6 +204,30 @@ void defineTests() {
     );
 
     testWidgets(
+      'should include custom image height in layout',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          boilerplate(
+            Align(
+              alignment: Alignment.topLeft,
+              child: SizedBox(
+                width: 300,
+                child: MarkdownBody(
+                  data: '![alt](image)',
+                  imageBuilder: (Uri uri, String? title, String? alt) => const SizedBox(width: 100, height: 200),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        final Text imageText = tester.widget<Text>(find.byType(Text));
+        expect(imageText.strutStyle?.forceStrutHeight, isFalse);
+        expect(tester.getSize(find.byType(Text)).height, greaterThanOrEqualTo(200));
+      },
+    );
+
+    testWidgets(
       'should work when nested in a link',
       (WidgetTester tester) async {
         final List<String> tapTexts = <String>[];

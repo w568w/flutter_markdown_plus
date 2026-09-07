@@ -1004,9 +1004,16 @@ class MarkdownBuilder implements md.NodeVisitor {
   Widget _buildRichText(TextSpan text, {TextAlign? textAlign, String? key}) {
     //Adding a unique key prevents the problem of using the same link handler for text spans with the same text
     final Key k = key == null ? UniqueKey() : Key(key);
-    // Force a consistent line height within each text block, derived from the
-    // span's own base style so headers/blockquotes keep their correct height
-    // while mixed font weights within a block no longer shift line height.
+    bool hasWidgetSpan = false;
+    text.visitChildren((InlineSpan span) {
+      if (span is WidgetSpan) {
+        hasWidgetSpan = true;
+        return false;
+      }
+      return true;
+    });
+    // Force a consistent line height for text-only blocks. WidgetSpan children
+    // must be allowed to expand the line to their rendered height.
     final TextStyle? baseStyle = text.style ?? styleSheet.p;
     final StrutStyle? strutStyle = baseStyle != null
         ? StrutStyle(
@@ -1014,7 +1021,7 @@ class MarkdownBuilder implements md.NodeVisitor {
             fontSize: baseStyle.fontSize ?? styleSheet.p?.fontSize,
             height: baseStyle.height ?? styleSheet.p?.height,
             leading: 0,
-            forceStrutHeight: true,
+            forceStrutHeight: !hasWidgetSpan,
           )
         : null;
     if (selectable) {
